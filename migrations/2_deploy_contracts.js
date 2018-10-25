@@ -1,5 +1,5 @@
-const lendingRequest = artifacts.require("./lendingRequest.sol");
+const lendingRequests = artifacts.require("./lendingRequests.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(lendingRequest);
+  deployer.deploy(lendingRequests);
 };

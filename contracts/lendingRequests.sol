@@ -1,6 +1,6 @@
 pragma solidity ^0.4.2;
 
-contract lendingRequest{
+contract lendingRequests{
 
 
 	// Data Structures for storage
@@ -13,7 +13,6 @@ contract lendingRequest{
 	}
 	// Unique TransactionId
 	// Transaction History
-
 	struct transactionId{
 		uint amount;
 		uint tid;
@@ -23,58 +22,67 @@ contract lendingRequest{
 		bool defaultStatus;
 	}
 
+	// Mapping of Transaction with History
 	mapping(address => transactionId[]) TransactionHistory;
 	Person[] public registeredParticipants;
 
+	// VerificationStatus DataStructures used for total status at every status
 	struct verificationStatus{
 		bool GovernmentAgencyCheck;
-		bool CreditRating;
+		uint CreditRating;
 		bool GrantStatus;
 	}
 
-
+	// Mapping with each address
 	mapping(address => verificationStatus) Status;
-
-
+	// Count the lenders in the total Blockchain
+	uint lenderCount = 0;
 	Person public p;
-	function lendingRequest() public{
-	}
-
-	function addLender(string name ) public{
+	function lendingRequests() public{
 
 	}
-
-	function lendersList (address adr) public{
-
+	// 
+	function addLender(string name ,string addres,uint aadhar,uint pan) public {
+		Person memory p = Person({
+			name : name,
+			addres : addres,
+			aadhar : aadhar,
+			pan : pan,
+			Blockaddr : msg.sender
+			});
+		registeredParticipants.push(p);
 	}
 
-	function DetailsLenderGovt (address adr) public{
-
+	// Getter function to give the list of Lenders to the Government
+	function DetailsLenderGovt () public returns(Person[]){
+		return registeredParticipants;
 	}
 
-	function DetailsLenderCredit (address adr) public{
-
+	// Getter function to give the list of lender to the Government
+	function DetailsLenderCredit (address adr) public returns(transactionId){
+		// Return mapping for the transaction Details
+		return TransactionHistory[adr];
 	} 
 
-	function DetailstoBank (address adr)public{
-
+	function DetailstoBank (address adr)public returns(VerificationStatus){
+		return Status[adr];
 	}
 
-	function GrantStatusforBank (address adr)public{
-
+	//GrantStatus by the Bank 
+	function GrantStatusforBank (address adr,bool Grant)public{
+		Status[adr].GrantStatus = Grant;
 	}
 
-	function CreditRate (address adr) public{
-
+	function CreditRate (address adr,uint Rating) public{
+		Status[adr].CreditRate  = Rating;
 	}
 
-	function ValidGovtId (address adr) public{
-
+	function ValidGovtId (address adr, bool check) public{
+		Status[adr].GovernmentAgencyCheck = check;
 	}
 
-	function GrantStatusCheck (address adr) public{
-		
-
+	function GrantStatusCheck (address adr) public return(bool){
+		return Status[adr].GrantStatus;
 	}
 	
 }
